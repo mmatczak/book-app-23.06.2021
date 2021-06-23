@@ -1,8 +1,10 @@
 <form>
   <div class="mb-3">
-    <label class="form-label">Author: </label>{{book.author}}
+    <label for="author" class="form-label">Author: </label>
+    <input id="author" class="form-control" [value]="book?.author">
   </div>
   <div class="mb-3">
-    <label class="form-label">Title:</label>{{book.title}}
+    <label for="title" class="form-label">Title:</label>
+    <input id="title" class="form-control" [value]="book?.title">
   </div>
 </form>
