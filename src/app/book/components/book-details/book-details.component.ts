@@ -1,6 +1,7 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Book} from '../../model';
+import {Component} from '@angular/core';
+import {Book, BookProperties} from '../../model';
 import {BookService} from '../../services/book.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'ba-book-details',
@@ -8,11 +9,14 @@ import {BookService} from '../../services/book.service';
   styleUrls: ['./book-details.component.scss']
 })
 export class BookDetailsComponent {
-  @Input()
   book: Book | undefined;
 
-  @Output()
-  bookChange: EventEmitter<Book> = new EventEmitter<Book>();
+  constructor(
+    private readonly books: BookService,
+    route: ActivatedRoute,
+    private readonly router: Router) {
+    this.book = route.snapshot.data.book;
+  }
 
   notifyOnBookChange(event: Event) {
     event.preventDefault();
@@ -21,7 +25,12 @@ export class BookDetailsComponent {
     const author = authorElement?.value ?? '';
     const titleElement = formElement.querySelector<HTMLInputElement>('#title');
     const title = titleElement?.value ?? '';
-    const updatedBook: Book = {id: this.book?.id!, author, title};
-    this.bookChange.emit(updatedBook);
+    if (this.book) { // edit existing
+      const updatedBook: Book = {id: this.book.id, author, title};
+      this.books.save(updatedBook).subscribe(() => this.router.navigateByUrl('/books'))
+    } else { // new book
+      const bookProps: BookProperties = {author, title};
+      this.books.saveNew(bookProps).subscribe(() => this.router.navigateByUrl('/books'))
+    }
   }
 }

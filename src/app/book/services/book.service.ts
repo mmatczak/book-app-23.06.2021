@@ -1,24 +1,21 @@
-import {Book} from '../model';
+import {Book, BookProperties} from '../model';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {Injectable} from '@angular/core';
 
-// @Injectable({
-//   providedIn: 'root'
-// })
 export class BookService {
+  private idSeq = 0;
   private booksSubject = new BehaviorSubject<Book[]>([
     {
-      id: 0,
+      id: this.idSeq++,
       author: 'Marek Matczak',
       title: 'Angular for nerds'
     },
     {
-      id: 1,
+      id: this.idSeq++,
       author: 'Douglas Crockford',
       title: 'JavaScript. The Good Parts'
     },
     {
-      id: 2,
+      id: this.idSeq++,
       author: 'Robert C. Martin',
       title: 'Clean Code'
     }
@@ -36,6 +33,30 @@ export class BookService {
       this.booksSubject.next(newBooks);
       subscriber.next(bookCopy);
       subscriber.complete();
+    });
+  }
+
+  saveNew(newBookProps: BookProperties): Observable<Book> {
+    return new Observable<Book>(subscriber => {
+      const newBook: Book = {...newBookProps, id: this.idSeq++};
+      const currentBooks = this.booksSubject.getValue();
+      const newBooks = [...currentBooks, newBook];
+      this.booksSubject.next(newBooks);
+      subscriber.next(newBook);
+      subscriber.complete();
+    });
+  }
+
+  getOne(id: number): Observable<Book> {
+    return new Observable<Book>(subscriber => {
+      const currentBooks = this.booksSubject.getValue();
+      const foundBook = currentBooks.find(book => book.id === id);
+      if (foundBook) {
+        subscriber.next(foundBook);
+        subscriber.complete();
+      } else {
+        subscriber.error(`Could not find book with ID: ${id}`);
+      }
     });
   }
 }
