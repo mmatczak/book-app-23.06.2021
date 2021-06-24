@@ -1,16 +1,26 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { BookOverviewComponent } from './book-overview.component';
+import {BookOverviewComponent} from './book-overview.component';
+import {BookService} from '../../services/book.service';
+import {of} from 'rxjs';
 
 describe('BookOverviewComponent', () => {
   let component: BookOverviewComponent;
   let fixture: ComponentFixture<BookOverviewComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ BookOverviewComponent ]
+  beforeEach(() => {
+    return TestBed.configureTestingModule({
+      imports: [],
+      declarations: [BookOverviewComponent],
+      providers: [{
+        provide: BookService, useValue: {
+          findAll() {
+            return of([])
+          }
+        }
+      }],
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
