@@ -1,7 +1,7 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {Book} from '../../model';
 import {BookService} from '../../services/book.service';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 
 @Component({
   selector: 'ba-book-overview',
@@ -9,12 +9,12 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./book-overview.component.scss'],
 })
 export class BookOverviewComponent implements OnDestroy {
-  books: Book[] | undefined;
+  readonly books$: Observable<Book[]>;
   selectedBook: Book | undefined;
-  private readonly subscription: Subscription;
+  private readonly subscriptions: Subscription[] = [];
 
-  constructor(books: BookService) {
-    this.subscription = books.findAll().subscribe(books => this.books = books);
+  constructor(private readonly bookService: BookService) {
+    this.books$ = this.bookService.findAll();
   }
 
   selectBook(book: Book): void {
@@ -26,11 +26,14 @@ export class BookOverviewComponent implements OnDestroy {
   }
 
   updateBooksWith(updatedBook: Book): void {
-    this.books = this.books?.map(book => updatedBook.id === book.id ? updatedBook : book);
-    this.selectedBook = updatedBook;
+    const subscription = this.bookService.save(updatedBook)
+      .subscribe((updatedBook) => {
+        this.selectedBook = updatedBook;
+      });
+    this.subscriptions.push(subscription);
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }
