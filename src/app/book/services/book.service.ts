@@ -63,7 +63,6 @@ export class BookService {
 
   search(query: string): Observable<Book[]> {
     return new Observable<Book[]>(subscriber => {
-      setTimeout(() => {
         let results: Book[];
         const currentBooks = this.booksSubject.getValue();
         if (query) {
@@ -75,7 +74,6 @@ export class BookService {
         }
         subscriber.next(results);
         subscriber.complete();
-      }, 2000);
     });
   }
 }
