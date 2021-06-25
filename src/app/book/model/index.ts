@@ -1,7 +1,11 @@
 export interface Book {
   id: number;
-  author: string;
+  author: {
+    firstname:string;
+    lastname:string;
+  };
   title: string;
+  publishedYear:number;
 }
 
 export type BookProperties = Omit<Book, 'id'>;

@@ -1,11 +1,36 @@
-<form (submit)="notifyOnBookChange($event)">
-  <div class="mb-3">
-    <label for="author" class="form-label">Author: </label>
-    <input id="author" class="form-control" [value]="book?.author">
-  </div>
+<form [formGroup]="bookFormGroup" (submit)="notifyOnBookChange($event)">
+  <ng-container formGroupName="author">
+    <div class="mb-3">
+      <label for="firstname" class="form-label"
+      >Firstname: </label>
+      <input id="firstname" class="form-control" formControlName="firstname"
+
+             [class.is-invalid]="bookFormGroup?.get('author.firstname')?.invalid && bookFormGroup?.get('author.firstname')?.touched">
+      <div class="invalid-feedback" *ngIf="bookFormGroup?.get('author.firstname')?.invalid && bookFormGroup?.get('author.firstname')?.touched">
+        <span *ngIf="bookFormGroup?.get('author.firstname')?.errors?.required"> Input is required!</span>
+        <span *ngIf="bookFormGroup?.get('author.firstname')?.errors?.tooLong"> Input is to Long
+          ({{bookFormGroup?.get('author.firstname')?.errors?.tooLong}} )!</span>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="lastname" class="form-label">Lastname: </label>
+      <input id="lastname" class="form-control" formControlName="lastname"
+             [class.is-invalid]="bookFormGroup?.get('author.lastname')?.invalid && bookFormGroup?.get('author.lastname')?.touched">
+    </div>
+  </ng-container>
   <div class="mb-3">
     <label for="title" class="form-label">Title:</label>
-    <input id="title" class="form-control" [value]="book?.title">
+    <input id="title" class="form-control" formControlName="title"
+           [class.is-invalid]="bookFormGroup?.get('title')?.invalid && bookFormGroup?.get('title')?.touched">
   </div>
-  <button type="submit" class="btn btn-primary">Save and Close</button>
+  <div class="mb-3">
+    <label for="publishedYear" class="form-label">Published Year:</label>
+    <input id="publishedYear" class="form-control" formControlName="publishedYear"
+           (keypress)="onlyNumbers($event)"
+           [class.is-invalid]="bookFormGroup?.get('publishedYear')?.invalid && bookFormGroup?.get('publishedYear')?.touched">
+  </div>
+
+  <button type="button" class="btn btn-primary" (click)="doIt()">DoIt</button>
+
+  <button type="submit" class="btn btn-primary" [disabled]="bookFormGroup.invalid">Save and Close</button>
 </form>

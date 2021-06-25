@@ -1,24 +1,35 @@
 import {Book, BookProperties} from '../model';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {delay} from 'rxjs/operators';
 
 export class BookService {
   private idSeq = 0;
   private booksSubject = new BehaviorSubject<Book[]>([
     {
       id: this.idSeq++,
-      author: 'Marek Matczak',
-      title: 'Angular for nerds'
+      author: {
+        firstname: 'Marek ',
+        lastname: 'Matczak'
+      },
+      title: 'Angular for nerds',
+      publishedYear: 2020
     },
     {
       id: this.idSeq++,
-      author: 'Douglas Crockford',
-      title: 'JavaScript. The Good Parts'
+      author: {
+        firstname: 'Douglas ',
+        lastname: 'Crockford'
+      },
+      title: 'JavaScript. The Good Parts',
+      publishedYear: 2020
     },
     {
       id: this.idSeq++,
-      author: 'Robert C. Martin',
-      title: 'Clean Code'
+      author: {
+        firstname: 'Robert ',
+        lastname: 'C. Martin'
+      },
+      title: 'Clean Code',
+      publishedYear: 2020
     }
   ]);
 
@@ -63,17 +74,17 @@ export class BookService {
 
   search(query: string): Observable<Book[]> {
     return new Observable<Book[]>(subscriber => {
-        let results: Book[];
-        const currentBooks = this.booksSubject.getValue();
-        if (query) {
-          const queryLowerCase = query.toLocaleLowerCase();
-          results = currentBooks.filter(book => book.author.toLocaleLowerCase().includes(queryLowerCase)
-            || book.title.toLocaleLowerCase().includes(queryLowerCase));
-        } else {
-          results = currentBooks;
-        }
-        subscriber.next(results);
-        subscriber.complete();
+      let results: Book[];
+      const currentBooks = this.booksSubject.getValue();
+      if (query) {
+        const queryLowerCase = query.toLocaleLowerCase();
+        results = currentBooks.filter(book => book.author.firstname.toLocaleLowerCase().includes(queryLowerCase)
+          || book.title.toLocaleLowerCase().includes(queryLowerCase));
+      } else {
+        results = currentBooks;
+      }
+      subscriber.next(results);
+      subscriber.complete();
     });
   }
 }
