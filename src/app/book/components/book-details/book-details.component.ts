@@ -34,14 +34,6 @@ export class BookDetailsComponent {
     return this.route.snapshot.data.book;
   }
 
-  doIt() {
-    if(this.bookFormGroup.get('title')?.enabled){
-      this.bookFormGroup.get('title')?.disable();
-    }else{
-      this.bookFormGroup.get('title')?.enable();
-    }
-  }
-
   onlyNumbers(event: KeyboardEvent) {
     console.log(event.key);
     if (!event.key.match(/[0-9]/)) {
@@ -68,9 +60,4 @@ function maxLength(maxLimit: number): ValidatorFn {
     const length = control.value?.length;
     return length > maxLimit ? {'tooLong': length} : null;
   }
-}
-
-function maxLength20(control: AbstractControl): ValidationErrors | null {
-  const length = control.value?.length;
-  return length > 20 ? {'tooLong': length} : null;
 }

@@ -1,0 +1,6 @@
+<ng-content></ng-content>
+<div class="invalid-feedback" *ngIf="formControl?.invalid && formControl?.touched">
+  <span *ngIf="formControl?.errors?.required"> Input is required!</span>
+  <span *ngIf="formControl?.errors?.tooLong"> Input is to Long
+          ({{formControl?.errors?.tooLong}} )!</span>
+</div>
