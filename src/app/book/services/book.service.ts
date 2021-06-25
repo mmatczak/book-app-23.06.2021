@@ -1,5 +1,6 @@
 import {Book, BookProperties} from '../model';
 import {BehaviorSubject, Observable} from 'rxjs';
+import {delay} from 'rxjs/operators';
 
 export class BookService {
   private idSeq = 0;
@@ -57,6 +58,24 @@ export class BookService {
       } else {
         subscriber.error(`Could not find book with ID: ${id}`);
       }
+    });
+  }
+
+  search(query: string): Observable<Book[]> {
+    return new Observable<Book[]>(subscriber => {
+      setTimeout(() => {
+        let results: Book[];
+        const currentBooks = this.booksSubject.getValue();
+        if (query) {
+          const queryLowerCase = query.toLocaleLowerCase();
+          results = currentBooks.filter(book => book.author.toLocaleLowerCase().includes(queryLowerCase)
+            || book.title.toLocaleLowerCase().includes(queryLowerCase));
+        } else {
+          results = currentBooks;
+        }
+        subscriber.next(results);
+        subscriber.complete();
+      }, 2000);
     });
   }
 }
