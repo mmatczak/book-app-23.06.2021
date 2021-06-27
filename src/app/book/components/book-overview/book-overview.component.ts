@@ -1,9 +1,9 @@
 import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {Book} from '../../model';
 import {BookService} from '../../services/book.service';
-import {fromEvent, Observable, OperatorFunction, merge} from 'rxjs';
+import {fromEvent, Observable, OperatorFunction, merge, of} from 'rxjs';
 import {Router} from '@angular/router';
-import {debounceTime, distinctUntilChanged, filter, map, switchMap} from 'rxjs/operators';
+import {catchError, debounceTime, distinctUntilChanged, filter, map, retry, switchMap} from 'rxjs/operators';
 import {FormControl} from "@angular/forms";
 
 @Component({
@@ -12,15 +12,13 @@ import {FormControl} from "@angular/forms";
   styleUrls: ['./book-overview.component.scss'],
 })
 export class BookOverviewComponent {
-  searchFormControl : FormControl;
+  searchFormControl : FormControl= new FormControl();
   readonly books$: Observable<Book[]>;
 
   constructor(private readonly bookService: BookService, private readonly router: Router) {
-    this.searchFormControl = new FormControl();
-
     const booksFromSearch$ = this.searchFormControl.valueChanges
       .pipe(
-        filter(value => value.length >= 3),
+        filter(value => value.length >= 3 || value.length === 0),
         distinctUntilChanged(),
         debounceTime(500),
         searchForResultsUsing(this.bookService),

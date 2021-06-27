@@ -1,1 +1,40 @@
-{}
+{
+  "books": [
+    {
+      "id": 0,
+      "author": {
+        "firstname": "Marek",
+        "lastname": "Matczak"
+      },
+      "title": "JavaScript for Nerds",
+      "publishedYear": "1234"
+    },
+    {
+      "id": 1,
+      "author": {
+        "firstname": "Douglas ",
+        "lastname": "Crockford"
+      },
+      "title": "JavaScript. The Good Parts",
+      "publishedYear": "123123"
+    },
+    {
+      "id": 2,
+      "author": {
+        "firstname": "Robert ",
+        "lastname": "C. Martin"
+      },
+      "title": "Clean Code",
+      "publishedYear": 2020
+    },
+    {
+      "author": {
+        "firstname": "Tomasz",
+        "lastname": "TTT"
+      },
+      "title": "Test",
+      "publishedYear": "1234",
+      "id": 3
+    }
+  ]
+}

@@ -12,7 +12,7 @@
       <label for="lastname" class="form-label">Lastname: </label>
       <ba-validation-error>
         <input id="lastname" class="form-control" formControlName="lastname"
-               [class.is-invalid]="bookFormGroup?.get('author.lastname')?.invalid && bookFormGroup?.get('author.lastname')?.touched">
+               baInputErrorClass>
       </ba-validation-error>
     </div>
   </ng-container>

@@ -10,10 +10,13 @@ import {BookDetailsComponent} from './book/components/book-details/book-details.
 import {SharedModule} from './shared/shared.module';
 import {BookResolver} from './book/components/book-details/book.resolver';
 import {NotFoundDialogComponent} from './shared/dialogs/not-found-dialog.component';
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {TokenInterceptorService} from "./shared/token-interceptor.service";
 
 @NgModule({
   declarations: [
     AppComponent
+
   ],
   imports: [
     BrowserModule,
@@ -47,7 +50,8 @@ import {NotFoundDialogComponent} from './shared/dialogs/not-found-dialog.compone
     BookModule,
     SharedModule
   ],
-  providers: [BookService, BookResolver],
+  providers: [BookService, BookResolver,
+    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule {
