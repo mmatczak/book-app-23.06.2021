@@ -12,7 +12,7 @@
       <label for="lastname" class="form-label">Lastname: </label>
       <ba-validation-error>
         <input id="lastname" class="form-control" formControlName="lastname"
-               [class.is-invalid]="bookFormGroup?.get('author.lastname')?.invalid && bookFormGroup?.get('author.lastname')?.touched">
+               baInputErrorClass>
       </ba-validation-error>
     </div>
   </ng-container>
@@ -26,9 +26,8 @@
   <div class="mb-3">
     <label for="publishedYear" class="form-label">Published Year:</label>
     <ba-validation-error>
-      <input id="publishedYear" class="form-control" formControlName="publishedYear"
-             (keypress)="onlyNumbers($event)"
-             baInputErrorClass>
+      <ba-my-custom-input  baInputErrorClass id="publishedYear" class="form-control" formControlName="publishedYear">
+      </ba-my-custom-input>
     </ba-validation-error>
   </div>
   <button type="submit" class="btn btn-primary" [disabled]="bookFormGroup.invalid">Save and Close</button>

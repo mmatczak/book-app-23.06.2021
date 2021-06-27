@@ -1,0 +1,6 @@
+<input id="publishedYear" #input
+       (keypress)="onlyNumbers($event)"
+       (input) = "userInput($event)"
+       (blur) = "onTouched()"
+       [disabled]="disabled"
+       >
